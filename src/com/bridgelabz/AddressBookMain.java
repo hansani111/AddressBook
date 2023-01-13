@@ -11,7 +11,7 @@ public class AddressBookMain {
         boolean flag = true;
 
         do {
-            System.out.println("PRESS 1 to Add Contact   ||   PRESS 2 to Edit Contact");
+            System.out.println("PRESS 1 to Add Contact   ||   PRESS 2 to Edit Contact   ||   PRESS 3 to DELETE Contact");
             int choice = sc.nextInt();
 
             switch (choice) {
@@ -21,11 +21,14 @@ public class AddressBookMain {
                 case 2:
                     addressbook1.editContactDetails();
                     break;
+                case 3:
+                    addressbook1.deleteContact();
+                    break;
                 default:
                     System.out.println("Invalid Input!!!! Please try again.");
                     break;
             }
-            System.out.println("\n*** Total Contacts : " + addressbook1.addressbook.size() + " ***");
+            System.out.println("\n*** Total Contacts present : " + addressbook1.addressbook.size() + " ***");
             System.out.println("\n");
         } while (flag);
     }
