@@ -133,4 +133,19 @@ public class AddressBook {
         if (flag1 == false)
             System.out.println("Sorry!!! There is no such contact present. Please check the firstname and try again.");
     }
+
+    /* Add Multiple contacts */
+    void addMultipleContacts() {
+        System.out.println("How many contacts do you want to add now : ");
+        int number = sc.nextInt();
+        if(number <= 0) {
+            System.out.println("Invalid Input!!!");
+        }else {
+            for(int i = 1; i <= number; i++) {
+                addContactDetails();
+                System.out.println("( " + i + " Contact added. )");
+            }
+        }
+    }
+
 }
