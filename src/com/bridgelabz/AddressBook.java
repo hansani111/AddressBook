@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AddressBook {
 
-    /* Taking array list to save the contacts */
+    /* Taking Array list to save the contacts */
     ArrayList<Contact> addressbook = new ArrayList<>();
 
     static Scanner sc = new Scanner(System.in);
@@ -38,8 +38,7 @@ public class AddressBook {
         System.out.println("Enter Email : ");
         contact.setEmail(sc.next());
 
-        //storing the contact (details) in array list
-        addressbook.add(contact);
+        addressbook.add(contact);		//storing the contact (details) in arraylist
 
         System.out.println("Contact added successfully.\n");
         System.out.println(addressbook);
