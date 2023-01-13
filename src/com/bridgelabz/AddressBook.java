@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class AddressBook {
 
-    /* Taking Array list to save the contacts */
+    /* Taking array list to save the contacts */
     ArrayList<Contact> addressbook = new ArrayList<>();
 
     static Scanner sc = new Scanner(System.in);
@@ -38,9 +38,76 @@ public class AddressBook {
         System.out.println("Enter Email : ");
         contact.setEmail(sc.next());
 
-        addressbook.add(contact);		//storing the contact (details) in arraylist
+        //storing the contact (details) in array list
+        addressbook.add(contact);
 
         System.out.println("Contact added successfully.\n");
         System.out.println(addressbook);
+    }
+
+    /* edit the contact */
+    void editContactDetails() {
+        if (addressbook.size() == 0) {
+            System.out.println("There is no contact present in adressbook. Please add atleast one contact first to edit.");
+            addContactDetails();
+            return;
+        }
+        System.out.println("Enter the Firstname of the contact which you want to edit :  ");
+        String name = sc.next();
+        boolean flag1 = false;
+
+        for (int person = 0; person < addressbook.size(); person++) {            //for all the contacts in the arraylist
+            if (addressbook.get(person).getFirstName().equals(name)) {
+                flag1 = true;
+                System.out.println("Please select any one option(1-8) to change the contact details" + "\n" + "PRESS 1 to edit FirstName" + "\n"
+                        + "PRESS 2 to edit Lastname" + "\n" + "PRESS 3 to edit Address" + "\n" + "PRESS 4 to edit City" + "\n"
+                        + "PRESS 5 to edit State" + "\n" + "PRESS 6 to edit zip" + "\n" + "PRESS 7 to edit PhoneNumber" + "\n"
+                        + "PRESS 8 to edit Email");
+                int choiceEdit = sc.nextInt();
+
+                switch (choiceEdit) {
+                    case 1:
+                        System.out.println("Enter new FirstName : ");
+                        addressbook.get(person).setFirstName(sc.next());
+                        break;
+                    case 2:
+                        System.out.println("Enter new Lastname : ");
+                        addressbook.get(person).setLastName(sc.next());
+                        break;
+                    case 3:
+                        System.out.println("Enter new Address : ");
+                        addressbook.get(person).setAddress(sc.next());
+                        break;
+                    case 4:
+                        System.out.println("Enter new City : ");
+                        addressbook.get(person).setCity(sc.next());
+                        break;
+                    case 5:
+                        System.out.println("Enter new State :  ");
+                        addressbook.get(person).setState(sc.next());
+                        break;
+                    case 6:
+                        System.out.println("Enter new ZIP : ");
+                        addressbook.get(person).setZip(sc.next());
+                        break;
+                    case 7:
+                        System.out.println("Enter new PhoneNumber : ");
+                        addressbook.get(person).setPhoneNumber(sc.next());
+                        break;
+                    case 8:
+                        System.out.println("Enter new Email : ");
+                        addressbook.get(person).setEmail(sc.next());
+                        break;
+                    default:
+                        System.out.println("Wrong choice!!!! Please try again later. ");
+                        return;
+                }
+                System.out.println("Details of the contact after edited: ");
+                System.out.println(addressbook.get(person));
+                return;
+            }
+        }
+        if (flag1 == false)
+            System.out.println("Sorry!!! There is no such contact present. Please check the firstname and try again.");
     }
 }
