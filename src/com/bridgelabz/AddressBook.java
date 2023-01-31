@@ -9,42 +9,63 @@ public class AddressBook {
     /* Taking arraylist to save the contacts */
     ArrayList<Contact> allContacts = new ArrayList<>();
 
-    /*Creating contact with this method */
+    /* Creating contact with this method */
     void addContactDetails() {
-        Contact newContact = new Contact();
+        String firstName = null;
+        String lastName = null;
 
-        System.out.println("Enter firstName");
-        newContact.setFirstName(sc.next());
+        boolean flag = true;
+        while (flag) {
+            System.out.println("Enter FirstName");
+            firstName = sc.next();
 
-        System.out.println("Enter lastName");
-        newContact.setLastName(sc.next());
+            System.out.println("Enter LastName");
+            lastName = sc.next();
+
+            flag = checkContactExist(firstName, lastName);
+        }
 
         System.out.println("Enter address");
-        newContact.setAddress(sc.next());
+        String address = sc.next();
 
         System.out.println("Enter City");
-        newContact.setCity(sc.next());
+        String city = sc.next();
 
         System.out.println("Enter State");
-        newContact.setState(sc.next());
-
-        System.out.println("Enter Phone No");
-        newContact.setPhoneNumber(sc.next());
+        String state = sc.next();
 
         System.out.println("Enter zip");
-        newContact.setZip(sc.next());
+        String zip = sc.next();
+
+        System.out.println("Enter Phone No");
+        String phoneNumber = sc.next();
 
         System.out.println("Enter email");
-        newContact.setEmail(sc.next());
+        String email = sc.next();
 
-        allContacts.add(newContact);
-        System.out.println("Contact created successfully. Total contact present in the current adressbook = " + allContacts.size());
+        allContacts.add(new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email));
+
+        System.out.println("Contact created successfully. Total contact present in the current adressbook = "
+                + allContacts.size());
+    }
+
+    /* Checking if given First name & Last name is already present in the arraylist or not */
+    boolean checkContactExist(String firstName, String lastName) {
+        for (Contact contact : allContacts) {
+            if (contact.getFirstName().equals(firstName) && contact.getLastName().equals(lastName)) {
+                System.out.println(
+                        "Another contact is already present with the same Name. So please try with different name.");
+                return true;
+            }
+        }
+        return false;
     }
 
     /* edit the contact */
     void editContactDetails() {
         if (allContacts.size() == 0) {
-            System.out.println("There is no contact present in current adressbook. Please add atleast one contact first to edit.");
+            System.out.println(
+                    "There is no contact present in current adressbook. Please add atleast one contact first to edit.");
             addContactDetails();
             return;
         }
@@ -52,18 +73,14 @@ public class AddressBook {
         String name = sc.next();
         boolean flag1 = false;
 
-        for (int person = 0; person < allContacts.size(); person++) {            //for all the contacts in the arraylist
+        for (int person = 0; person < allContacts.size(); person++) { // for all the contacts in the arraylist
             if (allContacts.get(person).getFirstName().equals(name)) {
                 flag1 = true;
-                System.out.println("Please select any one option(1-8) to change the contact details" + "\n" +
-                                    "PRESS 1 to edit FirstName" + "\n" +
-                                    "PRESS 2 to edit Lastname" + "\n" +
-                                    "PRESS 3 to edit Address" + "\n" +
-                                    "PRESS 4 to edit City" + "\n" +
-                                    "PRESS 5 to edit State" + "\n" +
-                                    "PRESS 6 to edit zip" + "\n" +
-                                    "PRESS 7 to edit PhoneNumber" + "\n" +
-                                    "PRESS 8 to edit Email");
+                System.out.println("Please select any one option(1-8) to change the contact details" + "\n"
+                        + "PRESS 1 to edit FirstName" + "\n" + "PRESS 2 to edit Lastname" + "\n"
+                        + "PRESS 3 to edit Address" + "\n" + "PRESS 4 to edit City" + "\n" + "PRESS 5 to edit State"
+                        + "\n" + "PRESS 6 to edit zip" + "\n" + "PRESS 7 to edit PhoneNumber" + "\n"
+                        + "PRESS 8 to edit Email");
                 int choiceEdit = sc.nextInt();
 
                 switch (choiceEdit) {
@@ -112,10 +129,11 @@ public class AddressBook {
             System.out.println("Sorry!!! There is no such contact present. Please check the firstname and try again.");
     }
 
-    /* Delete a contact*/
+    /* Delete a contact */
     void deleteContact() {
         if (allContacts.size() == 0) {
-            System.out.println("There is no contact present in adressbook. Please add atleast one contact first to delete.");
+            System.out.println(
+                    "There is no contact present in adressbook. Please add atleast one contact first to delete.");
             addContactDetails();
             return;
         }
@@ -126,7 +144,8 @@ public class AddressBook {
             if (allContacts.get(person).getFirstName().equals(name)) {
                 flag1 = true;
                 allContacts.remove(person);
-                System.out.println("Contact deleted successfully. Total contact present in the current adressbook = " + allContacts.size());
+                System.out.println("Contact deleted successfully. Total contact present in the current adressbook = "
+                        + allContacts.size());
                 return;
             }
         }
@@ -134,11 +153,7 @@ public class AddressBook {
             System.out.println("Sorry!!! There is no such contact present. Please check the firstname and try again.");
     }
 
-    @Override
-    public String toString() {
-        return "All contacts:-\n[" + allContacts + "]";
-    }
-
+    /* Showing details of a particular contact */
     public void showContact() {
         System.out.println("Enter the firstname of the contact to see the details : ");
         String name = sc.next();
@@ -150,5 +165,10 @@ public class AddressBook {
         }
         System.out.println("Contact NOT FOUND!!! Check the First name and try again.");
 
+    }
+
+    @Override
+    public String toString() {
+        return "All contacts:-\n[" + allContacts + "]";
     }
 }
