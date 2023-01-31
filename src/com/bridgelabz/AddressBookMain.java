@@ -1,43 +1,137 @@
 package com.bridgelabz;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AddressBookMain {
 
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        AddressBook addressbook1 = new AddressBook();
-        boolean flag = true;
+    static HashMap<String, AddressBook> allAddressbook = new HashMap<>();
 
-        do {
-            System.out.println("PRESS 1 to Add Contact      ||       PRESS 2 to Edit Contact       ||      PRESS 3 to DELETE Contact");
-            System.out.println("PRESS 4 to SEE all contacts ||   PRESS 5 to add multiple Contacts");
+    public static void main(String[] args) {
+        boolean flag = true;
+        while (flag) {
+            System.out.println("**** Main Menu****");
+            System.out.println("\n1.Add New AddressBook");
+            System.out.println("2.Show AddressBook details");
+            System.out.println("3.Delete Addressbook");
+            System.out.println("4.Edit Addressbook");
+            System.out.println("9. Exit");
 
             int choice = sc.nextInt();
 
             switch (choice) {
                 case 1:
-                    addressbook1.addContactDetails();
+                    addAdressbook();
                     break;
                 case 2:
-                    addressbook1.editContactDetails();
+                    printAdressbook();
                     break;
                 case 3:
-                    addressbook1.deleteContact();
+                    deleteAddressbook();
                     break;
                 case 4:
-                    System.out.println(addressbook1.addressbook);
+                    editAdressbook();
                     break;
-                case 5:
-                    addressbook1.addMultipleContacts();
+                case 9:
+                    flag = false;
+                    System.out.println("Successfully exited");
                     break;
+
                 default:
-                    System.out.println("Invalid Input!!!! Please try again.");
+                    System.out.println("INVALID INPUT !!!!!");
                     break;
             }
-            System.out.println("\n*** Total Contacts present : " + addressbook1.addressbook.size() + " ***");
-            System.out.println("\n");
-        } while (flag);
+        }
+    }
+
+    private static void editAdressbook() {
+        if (allAddressbook.size() == 0) {
+            System.out.println("There is no AdressBook present till now. Please add an Adressbook first.");
+            return;
+        }
+        System.out.println("Enter the name of the AdressBook which you want to edit : ");
+        String adressBookName = sc.next();
+        if (allAddressbook.containsKey(adressBookName)) {
+            boolean flag = true;
+            while (flag) {
+                System.out.println("\n" + "***** AddressBook Menu *****");
+                System.out.println("1.Add contact");
+                System.out.println("2.Edit Contact");
+                System.out.println("3.Delete contact");
+                System.out.println("4. Show details of a particular contact");
+                System.out.println("5. Show all contacts of " + adressBookName);
+                System.out.println("9. Exit");
+
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println("How many Contacts do you want to add : ");
+                        int numOfContacts = sc.nextInt();
+                        if (numOfContacts <= 0)
+                            System.out.println("INVALID INPUT !!!");
+                        else
+                            for (int i = 0; i < numOfContacts; i++) {
+                                allAddressbook.get(adressBookName).addContactDetails();
+                            }
+                        break;
+
+                    case 2:
+                        allAddressbook.get(adressBookName).editContactDetails();
+                        break;
+
+                    case 3:
+                        allAddressbook.get(adressBookName).deleteContact();
+                        break;
+                    case 4:
+                        allAddressbook.get(adressBookName).showContact();
+                        break;
+                    case 5:
+                        System.out.println(allAddressbook.get(adressBookName));
+                        break;
+                    case 9:
+                        flag = false;
+                        System.out.println("Successfully exited from " + adressBookName);
+                        break;
+
+                    default:
+                        System.out.println("INVALID INPUT !!!!");
+                        break;
+                }
+            }
+
+        } else {
+            System.out.println("SORRY!!! Adressbook NOT FOUND with the name " + adressBookName);
+            System.out.println("Currently present AdressBooks are :  " + allAddressbook.keySet());
+        }
+    }
+
+    private static void deleteAddressbook() {
+        if (allAddressbook.size() == 0) {
+            System.out.println("There is no AdressBook present till now. Please add an Adressbook first.");
+            return;
+        }
+
+        System.out.println("Enter the name of the Adressbook you want to delete : ");
+        String adressbookName = sc.next();
+
+        if (allAddressbook.containsKey(adressbookName)) {
+            allAddressbook.remove(adressbookName);
+            System.out.println("AdressBook Deleted Successfully!!!");
+        } else
+            System.out.println("Adressbook NOT FOUND with the name " + adressbookName);
+        System.out.println("Currently present AdressBooks are :  " + allAddressbook.keySet());
+
+    }
+
+    private static void printAdressbook() {
+        System.out.println(allAddressbook);
+    }
+
+    private static void addAdressbook() {
+        System.out.println("Enter the name of the Adressbook:");
+        String adressbookName = sc.next();
+        allAddressbook.put(adressbookName, new AddressBook());
     }
 }
