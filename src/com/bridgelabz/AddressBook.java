@@ -172,4 +172,9 @@ public class AddressBook {
     public String toString() {
         return "All contacts:-\n[" + allContacts + "]";
     }
+
+    public void showContactSortedAlphabetically() {
+        allContacts.stream().sorted((contact1, contact2) -> contact1.getFirstName().compareToIgnoreCase(contact2.getFirstName()))
+                .forEach(contact -> System.out.println(contact));
+    }
 }
