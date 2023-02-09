@@ -1,23 +1,24 @@
 package com.bridgelabz;
 
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
-
     static Scanner sc = new Scanner(System.in);
 
-    static HashMap<String, AddressBook> allAddressbook = new HashMap<>();
+    static Map<String, AddressBook> allAddressbook = new HashMap<>();
+
+    private static Map<String, ArrayList<Contact>> cityMap = new HashMap<>();
+    private static Map<String, ArrayList<String>> stateMap = new HashMap<>();
 
     public static void main(String[] args) {
         boolean flag = true;
         while (flag) {
-            System.out.println("**** Main Menu****");
-            System.out.println("\n1.Add New AddressBook");
-            System.out.println("2.Show AddressBook details");
-            System.out.println("3.Delete Addressbook");
-            System.out.println("4.Edit Addressbook");
-            System.out.println("9. Exit");
+            System.out.println("\n" + "***** Main Menu *****");
+            System.out.println("1.Add New AddressBook" + "     " + "2.Show AddressBook details");
+            System.out.println("3.Delete Addressbook" + "      " + " 4.Edit Addressbook");
+            System.out.println("5. Sort by City" + "           " + "6. Sort by state");
+            System.out.println("0. Exit");
 
             int choice = sc.nextInt();
 
@@ -34,7 +35,13 @@ public class AddressBookMain {
                 case 4:
                     editAdressbook();
                     break;
-                case 9:
+                case 5:
+                    displayByCity();
+                    break;
+                case 6:
+
+                    break;
+                case 0:
                     flag = false;
                     System.out.println("Successfully exited");
                     break;
@@ -44,6 +51,22 @@ public class AddressBookMain {
                     break;
             }
         }
+    }
+
+    private static void displayByCity() {
+        allAddressbook.forEach((name, adBook) ->
+                adBook.allContacts.stream().forEach(contact -> {
+                    if (cityMap.containsKey(contact.getCity())) {
+                        cityMap.get(contact.getCity()).add(contact);
+                    } else {
+                        ArrayList<Contact> city = new ArrayList<>();
+                        city.add(contact);
+                        cityMap.put(contact.getCity(), city);
+                    }
+                })
+        );
+        System.out.println(cityMap);
+
     }
 
     private static void editAdressbook() {
@@ -57,12 +80,11 @@ public class AddressBookMain {
             boolean flag = true;
             while (flag) {
                 System.out.println("\n" + "***** AddressBook Menu *****");
-                System.out.println("1.Add contact");
-                System.out.println("2.Edit Contact");
-                System.out.println("3.Delete contact");
-                System.out.println("4. Show details of a particular contact");
-                System.out.println("5. Show all contacts of " + adressBookName);
-                System.out.println("9. Exit");
+                System.out.println("1.Add contact" + "         " + "2.Edit Contact");
+                System.out.println("3.Delete contact" + "      " + "4. Show details of a particular contact");
+                System.out.println("5. Show all contacts of '" + adressBookName + "'");
+                System.out.println("6. Display by city" + "     " + "7. Display by state");
+                System.out.println("0. Exit");
 
                 int choice = sc.nextInt();
                 switch (choice) {
@@ -90,11 +112,26 @@ public class AddressBookMain {
                     case 5:
                         System.out.println(allAddressbook.get(adressBookName));
                         break;
-                    case 9:
+                    case 6:
+                        System.out.println("Enter the name of the city to see all the contacts of that city : ");
+                        String cityName = sc.next();
+                        List<Contact> listForCity = allAddressbook.get(adressBookName).allContacts.stream().distinct()
+                                .collect(Collectors.toList());
+
+                        System.out.println(listForCity);
+
+                        break;
+                    case 7:
+                        System.out.println("Enter the name of the State to see all the contacts of that city : ");
+                        String stateName = sc.next();
+                        System.out.println("All the contacts presents in the State " + stateName + " : \n");
+                        System.out.println(allAddressbook.get(adressBookName).allContacts.stream()
+                                .filter(t -> t.getState().equals(stateName)).collect(Collectors.toList()));
+                        break;
+                    case 0:
                         flag = false;
                         System.out.println("Successfully exited from " + adressBookName);
                         break;
-
                     default:
                         System.out.println("INVALID INPUT !!!!");
                         break;
@@ -132,6 +169,16 @@ public class AddressBookMain {
     private static void addAdressbook() {
         System.out.println("Enter the name of the Adressbook:");
         String adressbookName = sc.next();
-        allAddressbook.put(adressbookName, new AddressBook());
+        if (allAddressbook.containsKey(adressbookName)) {
+            System.out.println("Can't take this name. please try with any other unique name.");
+            System.out.println("All the present addressbooks list is :-  " + allAddressbook.keySet());
+            return;
+        } else {
+//			AddressBook addressBook = new AddressBook();
+//			addressBookList.add(addressBook);
+            allAddressbook.put(adressbookName, new AddressBook());
+        }
+
     }
+
 }
