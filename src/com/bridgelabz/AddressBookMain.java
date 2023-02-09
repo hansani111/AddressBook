@@ -9,7 +9,7 @@ public class AddressBookMain {
     static Map<String, AddressBook> allAddressbook = new HashMap<>();
 
     private static Map<String, ArrayList<Contact>> cityMap = new HashMap<>();
-    private static Map<String, ArrayList<String>> stateMap = new HashMap<>();
+    private static Map<String, ArrayList<Contact>> stateMap = new HashMap<>();
 
     public static void main(String[] args) {
         boolean flag = true;
@@ -36,10 +36,10 @@ public class AddressBookMain {
                     editAdressbook();
                     break;
                 case 5:
-                    displayByCity();
+                    sortByCity();
                     break;
                 case 6:
-
+                    sortByState();
                     break;
                 case 0:
                     flag = false;
@@ -53,7 +53,23 @@ public class AddressBookMain {
         }
     }
 
-    private static void displayByCity() {
+    private static void sortByState() {
+        allAddressbook.forEach((name, adBook) ->
+                adBook.allContacts.stream().forEach(contact -> {
+                    if (stateMap.containsKey(contact.getCity())) {
+                        stateMap.get(contact.getCity()).add(contact);
+                    } else {
+                        ArrayList<Contact> state = new ArrayList<>();
+                        state.add(contact);
+                        stateMap.put(contact.getCity(), state);
+                    }
+                })
+        );
+        System.out.println(stateMap);
+
+    }
+
+    private static void sortByCity() {
         allAddressbook.forEach((name, adBook) ->
                 adBook.allContacts.stream().forEach(contact -> {
                     if (cityMap.containsKey(contact.getCity())) {
@@ -174,8 +190,6 @@ public class AddressBookMain {
             System.out.println("All the present addressbooks list is :-  " + allAddressbook.keySet());
             return;
         } else {
-//			AddressBook addressBook = new AddressBook();
-//			addressBookList.add(addressBook);
             allAddressbook.put(adressbookName, new AddressBook());
         }
 
