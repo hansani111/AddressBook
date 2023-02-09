@@ -13,6 +13,7 @@ public class AddressBookMain {
 
     private static Map<String, ArrayList<Contact>> cityMap = new HashMap<>();
     private static Map<String, ArrayList<Contact>> stateMap = new HashMap<>();
+    private static Map<String, ArrayList<Contact>> zipMap = new HashMap<>();
 
     public static void main(String[] args) {
         boolean flag = true;
@@ -21,6 +22,7 @@ public class AddressBookMain {
             System.out.println("1.Add New AddressBook" + "     " + "2.Show AddressBook details");
             System.out.println("3.Delete Addressbook" + "      " + " 4.Edit Addressbook");
             System.out.println("5. Sort by City" + "           " + "6. Sort by state");
+            System.out.println("7. Sort by Zip");
             System.out.println("0. Exit");
 
             int choice = sc.nextInt();
@@ -44,6 +46,9 @@ public class AddressBookMain {
                 case 6:
                     sortByState();
                     break;
+                case 7:
+                    sortByZip();
+                    break;
                 case 0:
                     flag = false;
                     System.out.println("Successfully exited");
@@ -54,6 +59,21 @@ public class AddressBookMain {
                     break;
             }
         }
+    }
+
+    private static void sortByZip() {
+        allAddressbook.forEach((name, adBook) -> adBook.allContacts.stream().forEach(contact -> {
+            if (zipMap.containsKey(contact.getZip())) {
+                zipMap.get(contact.getZip()).add(contact);
+            } else {
+                ArrayList<Contact> zip = new ArrayList<>();
+                zip.add(contact);
+                zipMap.put(contact.getZip(), zip);
+            }
+        }));
+        zipMap.forEach((zip, contacts) -> System.out.println("Zip code : " +zip + " >> " + "\n" + contacts + "\n"
+                + "Total contacts present in " + zip + " :- " + contacts.size()));
+
     }
 
     private static void sortByState() {
@@ -196,5 +216,4 @@ public class AddressBookMain {
         }
 
     }
-
 }
